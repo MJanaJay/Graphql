@@ -1,29 +1,66 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { request } from "graphql-request";
 import { useQuery } from "react-query";
+import Chart from "chart.js/auto";
+import theme from "./Theme";
 
 export default function Projects(props) {
-    const { data, isLoading, error } = useQuery("projects", () => {
-        return request(props.endpoint, PROJECTS_QUERY);
-    });
+  const chartRef = useRef(null);
+  const [chartInstance, setChartInstance] = useState(null);
 
-    if (isLoading) return "Loading...";
-    if (error) return <pre>{error.message}</pre>;
+  const { data, isLoading, error } = useQuery("projects", () => {
+    return request(props.endpoint, PROJECTS_QUERY);
+  });
 
-    const projects = data.transaction;
+  useEffect(() => {
+    if (chartRef && chartRef.current) {
+      const newChartInstance = new Chart(chartRef.current.getContext("2d"), {
+        type: "line",
+        data: chartData,
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+        },
+      });
 
-    return (
-        <div>
-            <h1>Projects</h1>
-            <ul>
-            {projects.map((transaction, i) => (
-                <li key={i}>
-                    {transaction.object.name}: {transaction.amount / 100}{transaction.type}
-                </li>
-            ))}
-            </ul>
-        </div>
-    )
+      setChartInstance(newChartInstance);
+    }
+  }, [data]);
+
+  if (isLoading) return "Loading...";
+  if (error) return <pre>{error.message}</pre>;
+
+  const formattedData = data.transaction.map((transaction) => ({
+    name: transaction.object.name,
+    amount: transaction.amount / 100,
+    type: transaction.type,
+  }));
+
+  const chartData = {
+    labels: formattedData.map((data) => data.name),
+    datasets: [
+      {
+        label: "Amount",
+        data: formattedData.map((data) => data.amount),
+        borderColor: theme.palette.primary.main,
+        pointBackgroundColor: theme.palette.secondary.main,
+        borderWidth: 1,
+        pointBorderWidth: 1,
+        pointRadius: 1,
+        backgroundColor: theme.palette.tertiary.main,
+        fill: true,
+      },
+    ],
+  };
+
+  return (
+    <div>
+      <h1>Projects</h1>
+      <div id="projectBlock">
+          <canvas style={{width: "100%"}} ref={chartRef} />
+      </div>
+    </div>
+  );
 }
 
 const PROJECTS_QUERY = `

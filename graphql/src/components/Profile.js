@@ -1,6 +1,7 @@
 import React from "react";
 import { request } from "graphql-request";
 import { useQuery } from "react-query";
+import theme from "./Theme";
 
 // Profile info
 export default function Profile(props) {
@@ -16,11 +17,12 @@ export default function Profile(props) {
 
   return (
     <div>
-      <h1>Profile</h1>
       <ul>
-        <div>{user.login}</div>
-        <div>ID: {user.id}</div>
-        <div>Level: {tran.amount}</div>
+        <div id="username">{user.login}</div>
+        <div id="userInfo">
+          <div>ID: {user.id}</div>
+          <div>Level: {tran.amount}</div>
+        </div>
       </ul>
     </div>
   );
