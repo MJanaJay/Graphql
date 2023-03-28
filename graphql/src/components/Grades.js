@@ -52,51 +52,61 @@ export default function Grades(props) {
 
   return (
     <div>
-      <h1>Grades</h1>
-      <h2>Piscine-go first 25</h2>
-      <ul>
-        <li>
-          Quest 1
-          <ul>
-            {quest1Names.map((name) => (
-              <li key={name}>
-                {name} {getGradeCounts(name, "quest-01").zero}:{getGradeCounts(name, "quest-01").one}
+      <h1 style={{marginBottom: 13}}>Grades</h1>
+      <div id="gradeBlock">
+        <h2>Piscine-go first 25</h2>
+        <ul style={{paddingLeft: 0}}>
+          <div id="gradeInfo">
+            <div>
+              <li id="span">
+                <span id="g1">Quest 1</span>
+                <ul id="gradeData1">
+                  {quest1Names.map((name) => (
+                    <li key={name}>
+                      {name} <span style={{color: "#F7E731", fontSize: 16, paddingLeft: 13}}>{getGradeCounts(name, "quest-01").zero}:{getGradeCounts(name, "quest-01").one}</span>
+                    </li>
+                  ))}
+                </ul>
               </li>
-            ))}
-          </ul>
-        </li>
-        <li>
-          Quest 2
-          <ul>
-            {quest2Names.map((name) => (
-              <li key={name}>
-                {name} {getGradeCounts(name, "quest-02").zero}:{getGradeCounts(name, "quest-02").one}
+            </div>
+            <div>
+              <li id="span">
+                <span id="g2">Quest 2</span>
+                <ul id="gradeData2">
+                  {quest2Names.map((name) => (
+                    <li key={name}>
+                      {name} <span style={{color: "#F7E731", fontSize: 16, paddingLeft: 13}}>{getGradeCounts(name, "quest-02").zero}:{getGradeCounts(name, "quest-02").one}</span>
+                    </li>
+                  ))}
+                </ul>
               </li>
-            ))}
-          </ul>
-        </li>
-        <li>
-          Quest 3
-          <ul>
-            {quest3Names.map((name) => (
-              <li key={name}>
-                {name} {getGradeCounts(name, "quest-03").zero}:{getGradeCounts(name, "quest-03").one}
+            </div>
+            <div>
+              <li id="span">
+                <span id="g3">Quest 3</span>
+                <ul id="gradeData3">
+                  {quest3Names.map((name) => (
+                    <li key={name}>
+                      {name} <span style={{color: "#F7E731", fontSize: 16, paddingLeft: 13}}>{getGradeCounts(name, "quest-03").zero}:{getGradeCounts(name, "quest-03").one}</span>
+                    </li>
+                  ))}
+                </ul>
               </li>
-            ))}
-          </ul>
-        </li>
-      </ul>
+            </div>
+          </div>
+        </ul>
+      </div>
     </div>
   );
 }
 
 const GRADES_QUERY = `
 {
-    result(order_by: {updatedAt: asc}, where: {path: {_like: "%piscine-go/quest-0%"}, userId: {_eq: 1466}}) {
-        object {
-            name
-        }
-        path
+  result(order_by: {updatedAt: asc}, where: {path: {_like: "%piscine-go/quest-0%"}, userId: {_eq: 1466}}) {
+    object {
+      name
+    }
+    path
         grade
     }
 }

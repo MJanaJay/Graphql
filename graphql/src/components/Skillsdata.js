@@ -35,9 +35,9 @@ export default function Skills(props) {
             {
               label: "Skill Points",
               data: skillPoints,
-              pointBackgroundColor: theme.palette.secondary.main,
+              pointHoverBackgroundColor: theme.palette.secondary.main,
               pointBorderWidth: 1,
-              pointRadius: 0,
+              pointRadius: 3,
               showLine: true,
             },
           ],
